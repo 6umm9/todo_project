@@ -33,10 +33,27 @@ export const AppManager = (() => {
         activeProjectId = id;
     };
 
-    const createNewProject = (name) => {
-        const newProject = createProject(name);
+    const createNewProject = (name, startDate, endDate) => {
+        const newProject = createProject(name, startDate, endDate);
         projects.push(newProject);
         return newProject;
+    };
+
+    const deleteProject = (projectId) => {
+        // Prevent deleting the only project or default if we want to enforce one
+        projects = projects.filter(p => p.id !== projectId);
+        if (activeProjectId === projectId) {
+            // Switch to the first project available or null
+            activeProjectId = projects.length > 0 ? projects[0].id : null;
+        }
+    };
+
+    const addTodoToActiveProject = (title, description, startDate, endDate, priority) => {
+        const activeProject = getActiveProject();
+        if (activeProject) {
+            const newTodo = createTodo(title, description, startDate, endDate, priority);
+            activeProject.addTodo(newTodo);
+        }
     };
 
     return {
@@ -44,6 +61,8 @@ export const AppManager = (() => {
         getProjects,
         getActiveProject,
         setActiveProject,
-        createNewProject
+        createNewProject,
+        deleteProject,
+        addTodoToActiveProject
     };
 })();
