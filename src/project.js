@@ -1,12 +1,11 @@
-export function createProject(name, startDate = null, endDate = null) {
+export function createProject(name, color = '#1976d2') {
     const id = crypto.randomUUID();
     const todos = [];
 
     return {
         id,
         name,
-        startDate,
-        endDate,
+        color,
         todos,
         addTodo(todo) {
             todos.push(todo);
